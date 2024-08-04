@@ -1,0 +1,8 @@
+README.md
+**/.git
+node_modules/*
+build/*
+dist/*
+.expo/*
+babel.config.js
+metro.config.js

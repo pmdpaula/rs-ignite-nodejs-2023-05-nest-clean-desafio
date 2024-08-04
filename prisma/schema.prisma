@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  COURIER
+}
+
+model User {
+  id             String   @id @default(cuid())
+  registerNumber String   @unique @map("register_number")
+  name           String
+  role           UserRole @default(COURIER)
+  password       String
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  orders Order[]
+
+  @@map("users")
+}
+
+enum OrderStatus {
+  PENDING
+  WATING
+  DISPATCHED
+  DELIVERED
+  RETURNED
+  CANCELED
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  address   String
+  latitude  Float
+  longitude Float
+  status    OrderStatus @default(PENDING)
+  authorId  String      @map("author_id")
+  courierId String?     @map("courier_id")
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+
+  author  Receiver @relation(fields: [authorId], references: [id])
+  courier User?    @relation(fields: [courierId], references: [id])
+
+  notifications Notification[]
+  attachments   Attachment[]
+
+  @@map("orders")
+}
+
+model Receiver {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  orders Order[]
+
+  @@map("receivers")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  orderId   String   @map("order_id")
+  readAt    DateTime @updatedAt @map("read_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("notifications")
+}
+
+model Attachment {
+  id      String @id @default(uuid())
+  url     String
+  orderId String @map("order_id")
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("attachments")
+}

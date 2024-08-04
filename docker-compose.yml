@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: nest-clean-pg-desafio
+    image: postgres
+    ports:
+      - 5433:5432
+    user: 1000:1000
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: nest-clean
+      PGDATA: /data/postgres
+    volumes:
+      - ./data/pg:/data/postgres
+
+  cache:
+      container_name: nest-clean-cache-desafio
+      image: redis
+      ports:
+        - 6379:6379
+      volumes:
+        - ./data/redis:/data
