@@ -21,6 +21,8 @@ export class PrismaReceiverMapper {
       name: receiver.name,
       phone: receiver.phone,
       password: receiver.password,
+      createdAt: receiver.createdAt,
+      updatedAt: receiver.updatedAt,
     };
   }
 }
