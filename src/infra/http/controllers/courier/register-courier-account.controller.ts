@@ -7,30 +7,32 @@ import {
 } from "@nestjs/common";
 import { z } from "zod";
 
-import { CourierAlreadyExistsError } from "@/domain/delivery/application/use-case/errors/courier-already-exists-error";
 import { RegisterCourierUseCase } from "@/domain/delivery/application/use-case/courier/register-courier";
+import { CourierAlreadyExistsError } from "@/domain/delivery/application/use-case/errors/courier-already-exists-error";
 import { Public } from "@/infra/auth/public";
 
-import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
+import { ZodValidationPipe } from "../../pipes/zod-validation-pipe";
 
-const createAccountBodySchema = z.object({
+const registerCourierAccountBodySchema = z.object({
   name: z.string(),
   registerNumber: z.string(),
   password: z.string().min(5),
 });
 
-const bodyValidationPipe = new ZodValidationPipe(createAccountBodySchema);
+const bodyValidationPipe = new ZodValidationPipe(registerCourierAccountBodySchema);
 
-type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>;
+type RegisterCourierAccountBodySchema = z.infer<typeof registerCourierAccountBodySchema>;
 
-@Controller("/accounts")
+@Controller("/courier/accounts")
 @Public()
-export class CreateAccountController {
+export class RegisterCourierAccountController {
   // eslint-disable-next-line no-unused-vars
   constructor(private registerCourier: RegisterCourierUseCase) {}
 
   @Post()
-  async handle(@Body(bodyValidationPipe) body: CreateAccountBodySchema): Promise<void> {
+  async handle(
+    @Body(bodyValidationPipe) body: RegisterCourierAccountBodySchema,
+  ): Promise<void> {
     const { name, registerNumber, password } = body;
 
     const result = await this.registerCourier.execute({

@@ -13,22 +13,22 @@ import { WrongCredentialsError } from "@/domain/delivery/application/use-case/er
 import { Public } from "@/infra/auth/public";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 
-const authenticateBodySchema = z.object({
+const authenticateCourierBodySchema = z.object({
   registerNumber: z.string(),
   password: z.string(),
 });
 
-type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>;
+type AuthenticateCourierBodySchema = z.infer<typeof authenticateCourierBodySchema>;
 
-@Controller("/sessions")
+@Controller("/courier/sessions")
 @Public()
-export class AuthenticateController {
+export class AuthenticateCourierController {
   // eslint-disable-next-line no-unused-vars
   constructor(private authenticateCourier: AuthenticateCourierUseCase) {}
 
   @Post()
-  @UsePipes(new ZodValidationPipe(authenticateBodySchema))
-  async handle(@Body() body: AuthenticateBodySchema) {
+  @UsePipes(new ZodValidationPipe(authenticateCourierBodySchema))
+  async handle(@Body() body: AuthenticateCourierBodySchema) {
     const { registerNumber, password } = body;
 
     const result = await this.authenticateCourier.execute({

@@ -24,13 +24,13 @@ describe("Authenticate (E2E)", () => {
     await app.init();
   });
 
-  test("[POST] /sessions", async () => {
+  test("[POST] /courier/sessions", async () => {
     await courierFactory.makePrismaCourier({
       registerNumber: "0214965424",
       password: await hash("123456", 8),
     });
 
-    const response = await request(app.getHttpServer()).post("/sessions").send({
+    const response = await request(app.getHttpServer()).post("/courier/sessions").send({
       registerNumber: "0214965424",
       password: "123456",
     });
@@ -39,5 +39,22 @@ describe("Authenticate (E2E)", () => {
     expect(response.body).toEqual({
       access_token: expect.any(String),
     });
+  });
+
+  test("[POST] /courier/sessions", async () => {
+    await courierFactory.makePrismaCourier({
+      registerNumber: "0214965425",
+      password: await hash("123456", 8),
+    });
+
+    const response = await request(app.getHttpServer()).post("/courier/sessions").send({
+      registerNumber: "0214965425",
+      password: "wrong",
+    });
+
+    expect(response.statusCode).toBe(401);
+    // expect(response.body).toEqual({
+    //   access_token: expect.any(String),
+    // });
   });
 });
