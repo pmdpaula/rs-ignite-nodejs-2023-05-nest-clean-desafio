@@ -48,6 +48,7 @@ export class RegisterCourierUseCase {
       name,
       registerNumber,
       password: hashedPassword,
+      role: "COURIER",
     });
 
     await this.couriersRepository.create(courier);

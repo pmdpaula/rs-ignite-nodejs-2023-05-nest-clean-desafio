@@ -11,6 +11,12 @@ import { PrismaService } from "../prisma.service";
 export class PrismaCouriersRepository implements CouriersRepository {
   // eslint-disable-next-line no-unused-vars
   constructor(private prisma: PrismaService) {}
+  findById(id: string): Promise<Courier | null> {
+    throw new Error("Method not implemented.");
+  }
+  delete(courier: Courier): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 
   async create(courier: Courier): Promise<void> {
     const data = PrismaCourierMapper.toPrisma(courier);

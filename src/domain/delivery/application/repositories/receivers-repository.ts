@@ -6,4 +6,5 @@ export abstract class ReceiversRepository {
   abstract findByPhone(phone: string): Promise<Receiver | null>;
   abstract create(receiver: Receiver): Promise<void>;
   abstract save(receiver: Receiver): Promise<void>;
+  abstract delete(receiver: Receiver): Promise<void>;
 }

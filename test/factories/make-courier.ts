@@ -12,6 +12,7 @@ export function makeCourier(override: Partial<CourierProps> = {}, id?: UniqueEnt
       name: faker.person.fullName(),
       registerNumber: faker.number.int(10).toString(),
       password: faker.internet.password(),
+      role: "COURIER",
       ...override,
     },
     id,
