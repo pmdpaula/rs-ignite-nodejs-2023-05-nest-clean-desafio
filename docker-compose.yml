@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   postgres:
     container_name: nest-clean-pg-desafio
@@ -16,9 +14,9 @@ services:
       - ./data/pg:/data/postgres
 
   cache:
-      container_name: nest-clean-cache-desafio
-      image: redis
-      ports:
-        - 6379:6379
-      volumes:
-        - ./data/redis:/data
+    container_name: nest-clean-cache-desafio
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data/redis:/data
