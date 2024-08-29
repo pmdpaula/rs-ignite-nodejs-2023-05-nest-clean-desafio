@@ -5,6 +5,12 @@ import { Receiver } from "@/domain/delivery/enterprise/entities/receiver";
 export class InMemoryReceiversRepository implements ReceiversRepository {
   public items: Receiver[] = [];
 
+  async create(receiver: Receiver) {
+    this.items.push(receiver);
+
+    DomainEvents.dispatchEventsForAggregate(receiver.id);
+  }
+
   async findById(id: string): Promise<Receiver | null> {
     const receiver = this.items.find((item) => item.id.toString() === id);
 
@@ -31,9 +37,9 @@ export class InMemoryReceiversRepository implements ReceiversRepository {
     this.items[receiverIndex] = receiver;
   }
 
-  async create(receiver: Receiver) {
-    this.items.push(receiver);
+  async delete(receiver: Receiver): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === receiver.id);
 
-    DomainEvents.dispatchEventsForAggregate(receiver.id);
+    this.items.splice(itemIndex, 1);
   }
 }

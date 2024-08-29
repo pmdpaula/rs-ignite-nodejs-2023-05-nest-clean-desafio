@@ -9,8 +9,12 @@ import { PrismaService } from "../prisma.service";
 
 @Injectable()
 export class PrismaReceiversRepository implements ReceiversRepository {
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line
   constructor(private prisma: PrismaService) {}
+  // eslint-disable-next-line
+  delete(receiver: Receiver): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 
   async create(receiver: Receiver): Promise<void> {
     const data = PrismaReceiverMapper.toPrisma(receiver);

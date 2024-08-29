@@ -1,4 +1,4 @@
-import { Entity } from "@/core/entities/entity";
+import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
 
@@ -10,9 +10,13 @@ export interface ReceiverProps {
   updatedAt?: Date;
 }
 
-export class Receiver extends Entity<ReceiverProps> {
+export class Receiver extends AggregateRoot<ReceiverProps> {
   get name() {
     return this.props.name;
+  }
+
+  set name(name: string) {
+    this.props.name = name;
   }
 
   get phone() {
