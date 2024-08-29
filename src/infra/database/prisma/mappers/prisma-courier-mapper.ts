@@ -10,6 +10,7 @@ export class PrismaCourierMapper {
         name: raw.name,
         registerNumber: raw.registerNumber,
         password: raw.password,
+        role: raw.role,
       },
       new UniqueEntityID(raw.id),
     );
@@ -21,6 +22,7 @@ export class PrismaCourierMapper {
       name: courier.name,
       registerNumber: courier.registerNumber,
       password: courier.password,
+      role: courier.role,
     };
   }
 }

@@ -29,6 +29,22 @@ describe("Register Courier", () => {
     });
   });
 
+  it("should be able to register a new Admin", async () => {
+    const result = await sut.execute({
+      name: "Chefão",
+      registerNumber: "1111",
+      password: "123456",
+      role: "ADMIN",
+    });
+
+    expect(result.isRight()).toBe(true);
+    expect(result.value).toEqual({
+      courier: expect.objectContaining({
+        role: "ADMIN",
+      }),
+    });
+  });
+
   it("should hash courier password upon registration", async () => {
     const result = await sut.execute({
       name: "John Doe",

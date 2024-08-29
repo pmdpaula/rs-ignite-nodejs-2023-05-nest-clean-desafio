@@ -43,7 +43,7 @@ describe("Delete Courier", () => {
 
     // Act
     await sut.execute({
-      id: "1111",
+      courierId: "1111",
     });
 
     // Assert

@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { UserRole } from "@prisma/client";
 
 import { Either, left, right } from "@/core/either";
 
@@ -12,6 +13,7 @@ interface RegisterCourierUseCaseRequest {
   name: string;
   registerNumber: string;
   password: string;
+  role?: UserRole;
 }
 
 type RegisterCourierUseCaseResponse = Either<
@@ -34,6 +36,7 @@ export class RegisterCourierUseCase {
     name,
     registerNumber,
     password,
+    role,
   }: RegisterCourierUseCaseRequest): Promise<RegisterCourierUseCaseResponse> {
     const courierWithSameEmail =
       await this.couriersRepository.findByRegisterNumber(registerNumber);
@@ -48,7 +51,7 @@ export class RegisterCourierUseCase {
       name,
       registerNumber,
       password: hashedPassword,
-      role: "COURIER",
+      role: role || "COURIER",
     });
 
     await this.couriersRepository.create(courier);

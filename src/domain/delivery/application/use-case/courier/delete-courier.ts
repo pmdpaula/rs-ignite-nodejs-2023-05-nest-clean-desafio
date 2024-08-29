@@ -5,8 +5,8 @@ import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-e
 
 import { CouriersRepository } from "../../repositories/couriers-repository";
 
-interface RemoveCourierUseCaseRequest {
-  id: string;
+interface DeleteCourierUseCaseRequest {
+  courierId: string;
 }
 
 type DeleteCourierUseCaseResponse = Either<ResourceNotFoundError, null>;
@@ -17,9 +17,9 @@ export class DeleteCourierUseCase {
   constructor(private couriersRepository: CouriersRepository) {}
 
   async execute({
-    id,
-  }: RemoveCourierUseCaseRequest): Promise<DeleteCourierUseCaseResponse> {
-    const courier = await this.couriersRepository.findById(id);
+    courierId,
+  }: DeleteCourierUseCaseRequest): Promise<DeleteCourierUseCaseResponse> {
+    const courier = await this.couriersRepository.findById(courierId);
 
     if (!courier) {
       return left(new ResourceNotFoundError());

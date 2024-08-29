@@ -17,8 +17,10 @@ export class Courier extends AggregateRoot<CourierProps> {
   get name() {
     return this.props.name;
   }
+
   set name(name: string) {
     this.props.name = name;
+    this.touch();
   }
 
   get registerNumber() {
@@ -31,6 +33,7 @@ export class Courier extends AggregateRoot<CourierProps> {
 
   set password(password: string) {
     this.props.password = password;
+    this.touch();
   }
 
   get role() {
@@ -39,6 +42,7 @@ export class Courier extends AggregateRoot<CourierProps> {
 
   set role(role: UserRole) {
     this.props.role = role;
+    this.touch();
   }
 
   get createdAt() {
@@ -47,6 +51,10 @@ export class Courier extends AggregateRoot<CourierProps> {
 
   get updatedAt() {
     return this.props.updatedAt;
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date();
   }
 
   static create(props: Optional<CourierProps, "createdAt">, id?: UniqueEntityID) {

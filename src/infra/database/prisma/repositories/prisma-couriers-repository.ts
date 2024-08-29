@@ -11,11 +11,40 @@ import { PrismaService } from "../prisma.service";
 export class PrismaCouriersRepository implements CouriersRepository {
   // eslint-disable-next-line no-unused-vars
   constructor(private prisma: PrismaService) {}
-  findById(id: string): Promise<Courier | null> {
-    throw new Error("Method not implemented.");
+
+  async findById(id: string): Promise<Courier | null> {
+    const courier = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!courier) {
+      return null;
+    }
+
+    return PrismaCourierMapper.toDomain(courier);
   }
-  delete(courier: Courier): Promise<void> {
-    throw new Error("Method not implemented.");
+
+  async findByRegisterNumber(registerNumber: string): Promise<Courier | null> {
+    const courier = await this.prisma.user.findUnique({
+      where: {
+        registerNumber,
+      },
+    });
+
+    if (!courier) {
+      return null;
+    }
+
+    return PrismaCourierMapper.toDomain(courier);
+  }
+  async delete(courier: Courier): Promise<void> {
+    await this.prisma.user.delete({
+      where: {
+        id: courier.id.toString(),
+      },
+    });
   }
 
   async create(courier: Courier): Promise<void> {
@@ -37,19 +66,5 @@ export class PrismaCouriersRepository implements CouriersRepository {
     });
 
     DomainEvents.dispatchEventsForAggregate(courier.id);
-  }
-
-  async findByRegisterNumber(registerNumber: string): Promise<Courier | null> {
-    const courier = await this.prisma.user.findUnique({
-      where: {
-        registerNumber,
-      },
-    });
-
-    if (!courier) {
-      return null;
-    }
-
-    return PrismaCourierMapper.toDomain(courier);
   }
 }
